@@ -1,0 +1,63 @@
+<page-header title="Products" icon="fa fa-tags color-teal"></page-header>
+<page-content>
+    <div class="side_form col-sm-12 no-padding">
+        <button ng-if="!productsVm.loading" authorize="Product.Create" type="button" class="btn btn-primary" 
+            ng-click="productsVm.createOrUpdate()">
+			<i class="fa fa-plus"></i>New Product
+		</button>
+
+        <loading ng-if="productsVm.loading" class="pull-right"></loading>
+        <filter-box ng-hide="productsVm.loading" class="pull-right clear-padding-right" name="name" on-search="productsVm.fetch(filter)"
+            placeholder="Search by product name" advance="true">
+            <select ui-select2="{allowClear:true}" class="form-control" ng-model="filter.customerId" data-placeholder="Customer" ng-options="item.id as item.name for item in productsVm.customers">
+				<option value=""></option>
+			</select>
+            <select ui-select2="{allowClear:true}" class="form-control" ng-model="filter.typeId" data-placeholder="Product Type" ng-options="item.id as item.name for item in productsVm.productTypes">
+				<option value=""></option>
+			</select>
+            <select ui-select2="{allowClear:true}" class="form-control" ng-model="filter.categoryId" data-placeholder="Product Category" ng-options="item.id as item.name for item in productsVm.productCategories">
+				<option value=""></option>
+			</select>
+        </filter-box>
+    </div>
+
+
+    <div class="col-sm-12 no-padding">
+        <div class="panel panel-default top-default" authorize="Product.Read">
+            <div class="table-responsive">
+                <table class="table table-hover md">
+                    <thead>
+                        <tr>
+                            <th class="num_col_1">#</th>
+                            <th>Name</th>
+                            <th>Customer</th>
+                            <th>Type</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th class="num_col_2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="product in productsVm.records" class="pointer">
+                            <td>{{((productsVm.pageNumber - 1) * 15) + $index + 1}}</td>
+                            <td>{{product.name}}</td>
+                            <td>{{product.customer}}</td>
+                            <td>{{product.type}}</td>
+                            <td>{{product.category}}</td>
+                            <td>{{product.price | currency: ''}}</td>
+                            <td>
+                                <a ng-click="productsVm.createOrUpdate(product.id)" uib-tooltip="Edit" href=""><i class="fa fa-edit"></i></a>
+                                <a uib-tooltip="View" href="#!/product/{{product.id}}/show"><i class="fa fa-list-alt"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <span>Showing Page: {{productsVm.currentPage}} of {{productsVm.totalPages}}</span>
+                <uib-pager ng-change="productsVm.pageChanged(productsVm.currentPage)" total-items="productsVm.totalRecords"
+                    ng-model="productsVm.currentPage"></uib-pager>
+            </div>
+        </div>
+    </div>
+</page-content>

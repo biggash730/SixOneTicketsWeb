@@ -1,0 +1,151 @@
+<div class="pageheader_container">
+    <div class="pageheader">
+        <div class="btn-group btn-breadcrumb">
+            <a href="" class="btn btn-default" ui-sref="customers">
+                <i class="fa fa-address-card-o"></i> Customer
+            </a>
+            <a class="btn">Form</a>
+        </div>
+    </div>
+</div>
+
+<page-content>
+    <div class="col-sm-12 no-padding">
+        <form role="form" ng-submit="customersVm.saveRecord(customersVm.newRecord)">
+            <div class="card bg-white">
+                <div class="card-header header-line">
+                    <h2>Customer Form
+                        <small>Enter customer details</small>
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3 no-padding">
+                            <div class="form-group">
+                                <img class="img-responsive img-thumbnail" ng-src="{{customersVm.newRecord.logo || '/assets/images/company.png'}}" alt="">
+                                <div class="fileUpload btn btn-default">
+                                    <span><i class="fa fa-image"></i> Upload Picture</span>
+                                    <input type="file" class="upload" fileread="customersVm.newRecord.logo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-9 no-padding">
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <label for="Name">Customer Name: <i class="fa fa-asterisk color-maroon"></i></label>
+                                    <input type="text" id="Name" required="required" class="form-control" ng-model="customersVm.newRecord.name">
+                                </div>
+
+                                <div class="form-group col-xs-6">
+                                    <label for="CategoryId">Customer Category: <i class="fa fa-asterisk color-maroon"></i></label>
+                                    <select id="CategoryId" ui-select2="{ allowClear: true }" class="form-control" ng-required="true" ng-model="customersVm.newRecord.categoryId"
+                                        ng-options="d.id as d.name for d in customersVm.customerCategories">
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <label for="Address">Address:</label>
+                                    <input type="text" id="Address" class="form-control" ng-model="customersVm.newRecord.address">
+                                </div>
+
+                                <div class="form-group col-xs-6">
+                                    <label for="PhoneNumber">Phone Number:</label>
+                                    <input type="text" id="PhoneNumber" class="form-control" ng-model="customersVm.newRecord.phoneNumber">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-xs-6">
+                                    <label for="Email">Email:</label>
+                                    <input type="text" id="Email" class="form-control" ng-model="customersVm.newRecord.email">
+                                </div>
+
+                                <div class="form-group col-xs-3">
+                                    <label for="IsActive">Customer Status:</label><br>
+                                    <div class="radio-inline no-padding-left">
+                                        <label class="pointer">
+                                    <input type="radio" name="IsActive" ng-model="customersVm.newRecord.isActive" ng-value="true"> Active
+                                </label>
+                                    </div>
+                                    <div class="radio-inline no-padding-left">
+                                        <label class="pointer">
+                                    <input type="radio" name="IsActive" ng-model="customersVm.newRecord.isActive" ng-value="false"> Inactive
+                                </label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-3">
+                                    <label for="IsFreeZone">Is Free Zone:</label><br>
+                                    <div class="radio-inline no-padding-left">
+                                        <label class="pointer">
+                                    <input type="radio" name="IsFreeZone" ng-model="customersVm.newRecord.isFreeZone" ng-value="true"> Yes
+                                </label>
+                                    </div>
+                                    <div class="radio-inline no-padding-left">
+                                        <label class="pointer">
+                                    <input type="radio" name="IsFreeZone" ng-model="customersVm.newRecord.isFreeZone" ng-value="false"> No
+                                </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">Contacts</div>
+                                        <div>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="num_col_1">#</th>
+                                                        <th>Name</th>
+                                                        <th>Position</th>
+                                                        <th>Phone Number</th>
+                                                        <th>Email</th>
+                                                        <th class="num_col_1"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="contact in customersVm.newRecord.contacts">
+                                                        <td>{{$index+1}}</td>
+                                                        <td>{{contact.name}}</td>
+                                                        <td>{{contact.position}}</td>
+                                                        <td>{{contact.phoneNumber}}</td>
+                                                        <td>{{contact.email}}</td>
+                                                        <td>
+                                                            <a href="" ng-click="customersVm.removeContact($index, contact)" uib-tooltip="Remove"><i class="fa fa-remove"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>*</td>
+                                                        <td><input type="text" class="form-control" ng-model="customersVm.newContact.name"></td>
+                                                        <td><input type="text" class="form-control" ng-model="customersVm.newContact.position"></td>
+                                                        <td><input type="text" class="form-control" ng-model="customersVm.newContact.phoneNumber"></td>
+                                                        <td><input type="text" class="form-control" ng-model="customersVm.newContact.email"></td>
+                                                        <td>
+                                                            <button type="button" ng-click="customersVm.addContact()" class="btn btn-default btn-sm"><i class="fa fa-plus"></i>Add</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success" btn-loading="customersVm.saving" data-loading-text="Saving..."><i class="fa fa-save"></i>Save</button>
+                    <button type="button" class="btn btn-default" ng-click="customersVm.closeForm()">
+                        <i class="fa fa-ban"></i>Close
+                    </button>
+                    <button authorize="Customer.Delete" type="button" class="btn btn-danger pull-right" ng-if="customersVm.newRecord.id" ng-click="customersVm.deleteRecord(customersVm.newRecord)"
+                        btn-loading="customersVm.saving" data-loading-text="Saving...">
+                        <i class="fa fa-trash"></i>Delete
+                        </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</page-content>

@@ -1,0 +1,52 @@
+<page-header title="Job Order" icon="fa fa-tasks color-green"></page-header>
+<page-content>
+    <div class="side_form col-sm-12 no-padding">
+        <button ng-if="!jobOrderVm.loading" authorize="JobOrder.Create" type="button" class="btn btn-info" ng-click="jobOrderVm.createOrUpdate()">
+			<i class="fa fa-plus"></i>New Job Order
+		</button>
+
+        <loading ng-if="jobOrderVm.loading" class="pull-right"></loading>
+        <filter-box ng-hide="jobOrderVm.loading" class="pull-right clear-padding-right" name="orderNumber" on-search="jobOrderVm.fetch(filter)"
+            placeholder="Search by Number" advance="true">
+            <select ui-select2="{allowClear:true}" class="form-control" ng-model="filter.customerId" data-placeholder="Customer" ng-options="item.id as item.name for item in jobOrderVm.customers">
+				<option value=""></option>
+			</select>
+            <select ui-select2="{allowClear:true}" class="form-control" ng-model="filter.status" data-placeholder="Status" ng-options="item for item in jobOrderVm.jobOrderStatus">
+                <option value=""></option>
+            </select>
+            <input type="text" uib-datepicker-popup="dd-MMMM-yyyy" class="form-control" ng-model="filter.startDate" is-open="sdate.isOpen"
+                ng-click="sdate.isOpen=true" placeholder="Start Date" />
+            <input type="text" uib-datepicker-popup="dd-MMMM-yyyy" class="form-control" ng-model="filter.endDate" is-open="edate.isOpen"
+                ng-click="edate.isOpen=true" placeholder="End Date" />
+            <label class="form-control">
+                <input type="checkbox" style="margin-bottom: 0px" ng-model="filter.expired"> Expired
+            </label>
+        </filter-box>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4 col-md-3 no-padding-left" ng-repeat="jobOrder in jobOrderVm.records">
+            <a class="box box-solid card order_card link-card" href="#!/joborder/{{jobOrder.id}}/show">
+                <div class="box-body">
+                    <div class="img-container text-center">
+                        <img alt="" ng-src="{{jobOrder.picture || '/assets/images/order.png'}}" />
+                    </div>
+                    <div class="info-pad">
+                        <h3 class="name"><b>{{jobOrder.customer | characters:35}}</b></h3>
+                        <p>{{jobOrder.productName}}</p>
+                        <p class="number">{{jobOrder.orderNumber}}</p>
+                        <p>{{jobOrder.date | date: 'mediumDate'}}</p>
+                        <p class="text-right"><span class="label" ng-class="jobOrderVm.setStatusLabel(jobOrder.status)">{{jobOrder.status}}</span></p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <hr class="pager-top" ng-if="jobOrderVm.records.length > 0">
+    <div class="row page_pager" ng-if="jobOrderVm.records.length > 0">
+        <span>Showing Page: {{jobOrderVm.currentPage}} of {{jobOrderVm.totalPages}}</span>
+        <uib-pager ng-change="jobOrderVm.pageChanged(jobOrderVm.currentPage)" total-items="jobOrderVm.totalRecords" ng-model="jobOrderVm.currentPage"></uib-pager>
+    </div>
+    <hr class="pager-bottom" ng-if="jobOrderVm.records.length > 0">
+
+</page-content>

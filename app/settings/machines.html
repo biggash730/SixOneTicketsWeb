@@ -1,0 +1,71 @@
+<page-content>
+    <grid-controls>
+        <button type="button" class='btn btn-primary' ng-click="machineVm.addNew()">
+            <i class='fa fa-plus'></i>Add Machine
+        </button>
+        <loading ng-if="machineVm.loading" class="pull-right"></loading>
+    </grid-controls>
+
+    <div class="col-sm-4 no-padding-left" ng-show="machineVm.showForm">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">{{machineVm.formTitle}}</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-default btn-sm" ng-click="machineVm.closeForm()" type="button" uib-tooltip="Close">
+                        <i class="fa fa-ban icon_only"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label for="Name">Name:</label>
+                    <input type="text" id="Name" class="form-control" 
+                        ng-model="machineVm.newRecord.name" required="required" />
+                </div>
+                <div class="form-group">
+                    <label>capacity</label>
+                    <input type="text" class="form-control" 
+                        ng-model="machineVm.newRecord.capacity" required="required" />
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <input type="text" class="form-control" 
+                        ng-model="machineVm.newRecord.notes" required="required" />
+                </div>
+            </div>
+            <div class="box-footer">
+                <button class="btn btn-success" id="save" btn-loading="machineVm.saving" data-loading-text="Saving..." ng-click="machineVm.saveRecord(machineVm.newRecord)"><i class='fa fa-save'></i>Save </button>
+                <button class="btn btn-default" ng-click="machineVm.closeForm()"><i class='fa fa-ban'></i>Cancel</button>
+                <button ng-if="machineVm.newRecord.id" class="btn btn-danger pull-right" ng-click="machineVm.deleteRecord(machineVm.newRecord)"
+                    btn-loading="machineVm.deleting" data-loading-text="Deleting...">
+                    <i class="fa fa-trash"></i>Delete
+                </button>
+            </div>
+        </div>
+    </div>
+    <div ng-class="machineVm.gridSize" class="no-padding">
+        <div class="panel panel-default top-default">
+            <div class="table-responsive">
+                <table class='table table-hover'>
+                    <thead>
+                        <tr>
+                            <th class="num_col_1">#</th>
+                            <th>Name</th>
+                            <th>Capacity</th>
+                             <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="record in machineVm.records" ng-click="machineVm.edit(record)" 
+                            class="link-row" ng-class="{ active: machineVm.newRecord.id == record.id}">
+                            <td>{{$index + 1}}</td>
+                            <td>{{record.name}}</td>
+                            <td>{{record.capacity}}</td>
+                            <td>{{record.notes}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</page-content>

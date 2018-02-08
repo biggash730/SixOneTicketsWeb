@@ -1,0 +1,47 @@
+<div class="col-sm-4 no-padding-left" id="badStockForm" ng-if="badStockVm.showForm">
+    <form role="form" ng-submit="badStockVm.saveRecord(badStockVm.newRecord)">
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">{{badStockVm.formTitle}}</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-default btn-sm" ng-click="badStockVm.closeForm()" data-widget="remove" type="button" uib-tooltip="Close">
+                        <i class="fa fa-ban icon_only"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="text" class="form-control" ng-model="badStockVm.newRecord.date" uib-datepicker-popup is-open="date.isOpen" ng-click="date.isOpen=true"
+                        ng-required="true">
+                </div>
+                <div class="form-group">
+                    <label>Item</label>
+                    <select class="form-control" ng-model="badStockVm.newRecord.categoryId" ui-select2 ng-options="item.id as item.name for item in badStockVm.stockItems">
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" min="1" ng-model="badStockVm.newRecord.quantity" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Weight</label>
+                    <input type="number" min="0" step="any" ng-model="badStockVm.newRecord.quantity" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="Notes" class="form-control" ng-model="badStockVm.newRecord.notes" cols="5" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="button" btn-loading="badStockVm.deleting" data-loading-text="Deleting" class="btn btn-danger pull-right" ng-click="badStockVm.deleteRecord(badStockVm.newRecord)"
+                    ng-if="badStockVm.newRecord.id">
+                    <i class="fa fa-trash"></i> Delete
+                    </button>
+                    <button type="submit" id="save" btn-loading="badStockVm.saving" data-loading-text="Saving..." class="btn btn-success"><i class="fa fa-save"></i>Save</button>
+                    <button type="button" ng-click="badStockVm.closeForm()" class="btn btn-default"><i class="fa fa-ban"></i>Close</button>
+            </div>
+        </div>
+    </form>
+</div>

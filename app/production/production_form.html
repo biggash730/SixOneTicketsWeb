@@ -1,0 +1,151 @@
+<div class="col-sm-6 no-padding-left" ng-if="productionVm.showForm">
+    <form role="form" ng-submit="productionVm.saveRecord(productionVm.newRecord)">
+        <div class="box box-default">
+            <div class="box-header">
+                <h3 class="box-title">{{productionVm.formTitle}}</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-default btn-sm" ng-click="productionVm.closeForm()" data-widget="remove" type="button" uib-tooltip="Close">
+                        <i class="fa fa-ban icon_only"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Job Order</label>
+                            <div class="col-sm-10">
+                                <span ng-if="productionVm.newRecord.id" class="form-control" disabled>{{productionVm.newRecord.jobOrder.items[0].product.name}}</span>
+                                <select ng-if="!productionVm.newRecord.id" ui-select2="{allowClear:true}" class="form-control" ng-model="productionVm.newRecord.jobOrderId"
+                                    ng-options="item.id as item.customer + ' - ' + item.productName for item in productionVm.jobOrders">
+                                    <option value=""></option>
+                                    </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Number</label>
+                            <div class="col-sm-10">
+                                <span ng-if="productionVm.newRecord.id" class="form-control" disabled>{{productionVm.newRecord.number | date: 'mediumDate'}}</span>
+                                <input ng-if="!productionVm.newRecord.id" type="text" class="form-control" ng-model="productionVm.newRecord.number" ng-required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Start Date</label>
+                            <div class="col-sm-4">
+                                <span ng-if="productionVm.newRecord.id" class="form-control" disabled>{{productionVm.newRecord.startDate | date: 'mediumDate'}}</span>
+                                <input ng-if="!productionVm.newRecord.id" type="text" class="form-control" ng-model="productionVm.newRecord.startDate" uib-datepicker-popup
+                                    is-open="date.isOpen" ng-click="date.isOpen=true" ng-required="true">
+                            </div>
+                            <label class="col-sm-2 control-label">End Date</label>
+                            <div class="col-sm-4">
+                                <!--<span ng-if="productionVm.newRecord.id" class="form-control" disabled>{{productionVm.newRecord.endDate | date: 'mediumDate'}}</span>-->
+                                <input type="text" class="form-control" ng-model="productionVm.newRecord.endDate" uib-datepicker-popup is-open="date.isOpen"
+                                    ng-click="date.isOpen=true" ng-required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Quantity</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" ng-model="productionVm.newRecord.quantityProduced" ng-required="true">
+                            </div>
+                            <label class="col-sm-2 control-label">Weight</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" ng-model="productionVm.newRecord.weightProduced" ng-required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Waste</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" ng-model="productionVm.newRecord.waste" ng-required="true">
+                            </div>
+                            <label class="col-sm-2 control-label">Waste Weight</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" ng-model="productionVm.newRecord.wasteWeight" ng-required="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Machine</label>
+                            <div class="col-sm-10">
+                                <span ng-if="productionVm.newRecord.id" class="form-control" disabled>{{productionVm.newRecord.machine.name}}</span>
+                                <select ng-if="!productionVm.newRecord.id" ui-select2="{allowClear:true}" class="form-control" ng-model="productionVm.newRecord.machineId"
+                                    ng-options="item.id as item.name for item in productionVm.machines">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Notes</label>
+                            <div class="col-sm-10">
+                                <textarea id="Notes" class="form-control" ng-model="productionVm.newRecord.notes" cols="5" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Materials</div>
+                        <div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="num_col_1">#</th>
+                                        <th style="width: 30%">Item</th>
+                                        <th>Reel width</th>
+                                        <th>GSM</th>
+                                        <th style="width: 20%">Quantity</th>
+                                        <th class="num_col_1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="receiptItem in productionVm.newRecord.materials">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{receiptItem.item.item.name || receiptItem.item.name}}</td>
+                                        <td>{{receiptItem.reelWidth}}</td>
+                                        <td>{{receiptItem.gsm}}</td>
+                                        <td>{{receiptItem.quantity}}</td>
+                                        <td>
+                                            <a href="" ng-click="productionVm.removeItem($index, receiptItem)" uib-tooltip="Remove"><i class="fa fa-remove"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>*</td>
+                                        <td>
+                                            <select ui-select2 class="form-control" ng-model="productionVm.newMaterial.item" ng-options="record as record.item.name for record in productionVm.stockItems"></select>
+                                        </td>
+                                        <td>
+                                            <select ui-select2 class="form-control" ng-model="productionVm.newMaterial.reel" ng-options="reel as reel.number for reel in productionVm.newMaterial.item.reels" ng-disabled="!productionVm.newMaterial.item.item.isPaper"></select>
+                                        </td>
+                                        <td>
+                                            <select ui-select2 class="form-control" ng-model="productionVm.newMaterial.gsm" ng-options="gsm as gsm for gsm in productionVm.newMaterial.reel.gsms" ng-disabled="!productionVm.newMaterial.item.item.isPaper"></select>
+                                        </td>
+                                        <td><input type="number" min="1" class="form-control" ng-model="productionVm.newMaterial.quantity"></td>
+
+                                        <td>
+                                            <button type="button" uib-tooltip="Add" ng-click="productionVm.addItem()" class="btn btn-default btn-sm"><i class="fa fa-plus icon_only"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <button authorize="StockIssue.Delete" type="button" btn-loading="productionVm.deleting" data-loading-text="Deleting" class="btn btn-danger pull-right"
+                        ng-click="productionVm.deleteRecord(productionVm.newRecord)" ng-if="productionVm.newRecord.id"> <i class="fa fa-trash"></i> Delete </button>
+                    <button authorize="Production.Create|Production.Update" type="submit" id="save" btn-loading="productionVm.saving" data-loading-text="Saving..."
+                        class="btn btn-success"><i class="fa fa-save"></i>Save</button>
+                    <button type="button" ng-click="productionVm.closeForm()" class="btn btn-default"><i class="fa fa-ban"></i>Close</button>
+                </div>
+            </div>
+    </form>
+    </div>

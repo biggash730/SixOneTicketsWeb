@@ -1,0 +1,59 @@
+<page-header title="Productions" icon="fa fa-crop color-blueviolet"></page-header>
+
+
+<page-content>
+    <div class="side_form col-sm-12 no-padding">
+        <button ng-if="!productionVm.loading" authorize="Production.Create" type="button" class="btn btn-primary" ng-click="productionVm.addNew()">
+			<i class="fa fa-plus"></i>New Production
+		</button>
+
+        <loading ng-if="productionVm.loading" class="pull-right"></loading>
+        <filter-box ng-hide="productionVm.loading" class="pull-right clear-padding-right" name="number" on-search="productionVm.fetch(filter)"
+            placeholder="Search by number" advance="true">
+            <input type="text" class="form-control" ng-model="filter.waybill" placeholder="Waybill">
+            <select ui-select2="{allowClear:true}" class="form-control" ng-model="filter.supplierId" data-placeholder="Supplier" ng-options="item.id as item.name for item in stockissueVm.suppliers">
+				<option value=""></option>
+			</select>
+        </filter-box>
+    </div>
+
+    <div ng-include="'production_form'"></div>
+
+    <div ng-class="productionVm.gridSize" class="no-padding">
+        <div class="panel panel-default top-default" authorize="Production.Read">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="num_col_1">#</th>
+                            <th>Number</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Quantity Produced</th>
+                            <th>Weight Produced</th>
+                            <th>Waste</th>
+                            <th>Waste Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="production in productionVm.records" ng-class="{ active: productionVm.newRecord.id == production.id}" class="pointer"
+                            ng-click="productionVm.edit(production)">
+                            <td>{{((productionVm.pageNumber - 1) * 15) + $index + 1}}</td>
+                            <td>{{production.number}}</td>
+                            <td>{{production.startDate | date: 'mediumDate'}}</td>
+                            <td>{{production.endDate | date: 'mediumDate'}}</td>
+                            <td>{{production.quantityProduced}}</td>
+                            <td>{{production.weightProduced}}</td>
+                            <td>{{production.waste}}</td>
+                            <td>{{production.wasteWeight}}</td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <span>Showing Page: {{productionVm.currentPage}} of {{productionVm.totalPages}}</span>
+                <uib-pager ng-change="productionVm.pageChanged(productionVm.currentPage)" total-items="productionVm.totalRecords" ng-model="productionVm.currentPage"></uib-pager>
+            </div>
+        </div>
+    </div>
+</page-content>

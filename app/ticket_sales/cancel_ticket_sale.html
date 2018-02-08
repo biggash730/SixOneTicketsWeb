@@ -1,0 +1,114 @@
+<page-header title="Cancel Ticket Sale" icon="fa fa-close"></page-header>
+
+<page-content>
+
+    <div class="col-sm-12">
+        <div class="card" ng-if="!ticketsVm.id">
+            <div class="card-header header-line">
+                Get Ticket Sale Details
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <input type="text" class="form-control" ng-model="ticketsVm.refNumber" placeholder="Ticket Sale Reference Number">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <button type="button" class="btn btn-primary" ng-click="ticketsVm.search(ticketsVm.refNumber)"><i class="fa fa-search"></i> Fetch</button>
+                    </div>
+                </div>
+                <hr/>
+                <div ng-if="ticketsVm.sale">
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label>Date</label>
+                            <input type="text" class="form-control" ng-model="ticketsVm.sale.date" uib-datepicker-popup is-open="date.isOpen" ng-click="date.isOpen=true" disabled>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Reference Number</label>
+                            <input type="text" ng-model="ticketsVm.sale.refNumber" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Sold By</label>
+                            <input type="text" ng-model="ticketsVm.sale.createdBy" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label>Ticket Title</label>
+                            <input type="text" ng-model="ticketsVm.sale.ticket.title" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Ticket Type</label>
+                            <input type="text" ng-model="ticketsVm.sale.ticket.type" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Unit Cost</label>
+                            <input type="number" ng-model="ticketsVm.sale.ticket.price" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-4">
+                            <label>Quantity</label>
+                            <input type="number" ng-model="ticketsVm.sale.quantity" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Discount</label>
+                            <input type="number" ng-model="ticketsVm.sale.discount" class="form-control" disabled>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>Total Price</label>
+                            <input type="number" ng-model="ticketsVm.sale.totalPrice" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <label>Reasons for Cancelling Ticket Sale</label>
+                            <textarea rows="3" class="form-control" ng-model="ticketsVm.sale.notes"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <a ui-sref="tickets.cancelledticketsales" class="btn btn-default pull-right"><i class="fa fa-ban"></i>Back</a>
+                        <button class="btn btn-success pull-right" ng-click="ticketsVm.cancel()" style="margin-right: 5px">
+                        <i class="fa fa-save"></i>Cancel Ticket Sale
+                    </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" ng-if="ticketsVm.id">
+            <div class="card-header header-line">
+                Cancelled Ticket Sale Details
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label>Date</label>
+                        <input type="text" class="form-control" ng-model="ticketsVm.cancelledSale.date" uib-datepicker-popup is-open="date.isOpen" ng-click="date.isOpen=true" disabled>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label>Reference Number</label>
+                        <input type="text" ng-model="ticketsVm.cancelledSale.sale.refNumber" class="form-control" disabled>
+                    </div>
+                    <div class="form-group col-sm-5">
+                        <label>Cancelled By</label>
+                        <input type="text" ng-model="ticketsVm.cancelledSale.createdBy" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-12">
+                        <label>Reasons for Cancelling Ticket Sale</label>
+                        <textarea rows="3" class="form-control" ng-model="ticketsVm.cancelledSale.notes" disabled></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <a ui-sref="tickets.cancelledticketsales" class="btn btn-default pull-right"><i class="fa fa-ban"></i>Back</a>
+                    <button class="btn btn-success pull-right" ng-click="ticketsVm.reverse()" style="margin-right: 5px">
+                        <i class="fa fa-save"></i>Reverse
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</page-content>

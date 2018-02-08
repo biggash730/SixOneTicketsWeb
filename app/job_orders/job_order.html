@@ -1,0 +1,260 @@
+<div class="pageheader_container">
+    <div class="pageheader">
+        <div class="btn-group btn-breadcrumb">
+            <a href="" class="btn btn-default" ui-sref="joborders">
+                <i class="fa fa-list"></i> Job Order
+            </a>
+            <a class="btn">Job Order Details</a>
+        </div>
+    </div>
+</div>
+
+<page-content>
+    <div class="card bg-white job-order-details-box">
+        <div class="card-header header-line">
+            <span class="pull-right" ng-if="jobOrderVm.loading">
+                <i class="fa fa-spinner fa-spin fa-2x"></i>
+                <span style="font-size: 20px; font-weight: bold">Loading...</span>
+            </span>
+            <div ng-if="!jobOrderVm.loading" class="pull-right">
+                <a class="btn btn-default" style="margin-left: 10px" ng-click="jobOrderVm.view()" ng-if="jobOrderVm.jobOrderDetails.stage < 5">
+                    <i class="fa fa-edit"></i>Edit
+                </a>
+                <a class="btn btn-default" ng-click="jobOrderVm.print(jobOrderVm.jobOrderDetails.id, 'JobOrder')" ng-if="jobOrderVm.jobOrderDetails.stage > 1">
+                    <i class="fa fa-print"></i>Print JobOrder
+                </a>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-print"></i> Print ProForma
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="currency in jobOrderVm.currencies" ng-click="jobOrderVm.print(jobOrderVm.jobOrderDetails.id, currency.id)">
+                            <a href="">{{currency.name}} ({{currency.symbol}})</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--<div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="fa fa-envelope"></i> Email ProForma <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="currency in jobOrderVm.currencies"><a href="">{{currency.name}} ({{currency.symbol}})</a></li>
+                    </ul>
+                </div>-->
+                <button type="button" class="btn btn-default" ng-click="jobOrderVm.closeForm()">
+                    <i class="fa fa-ban"></i>Close
+                </button>
+            </div>
+            <h2>Job Order Details
+                <small>Shows job order details</small>
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="alert alert-warning alert-dismissible" role="alert" ng-if="jobOrderVm.priceAlertMsg">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <strong>Warning!</strong> {{jobOrderVm.priceAlertMsg}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="panel panel-default top-default">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.customer}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Order Number</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.orderNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <th>LPO Number</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.referenceNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Order Date</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.date | date: "mediumDate"}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Expiry Date</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.expiryDate | date: "mediumDate"}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Expected Delivery</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.expectedDelivery | date: "mediumDate"}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td>
+                                        <span ng-class="{'label label-success': jobOrderVm.jobOrderDetails.status == jobOrderVm.jobOrder, 'label label-primary': jobOrderVm.jobOrderDetails.status == jobOrderVm.proforma}"
+                                            style="font-size: 14px">{{jobOrderVm.jobOrderDetails.status}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Total</th>
+                                    <td colspan="3">{{jobOrderVm.jobOrderDetails.total | number: '2'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="panel-footer" ng-if="jobOrderVm.jobOrderDetails.stage < 5">
+                            <button type="button" class="btn btn-success" ng-click="jobOrderVm.confirmProforma()" ng-if="jobOrderVm.jobOrderDetails.status == 'ProForma'">
+                                <i class="fa fa-check-square"></i>Confirm Proforma
+                            </button>
+                            <button type="button" class="btn btn-success" ng-click="jobOrderVm.startProcess('Production')" ng-if="jobOrderVm.jobOrderDetails.status == 'JobOrder'">
+                                <i class="fa fa-play"></i>Start Production
+                            </button>
+                            <div class="form-inline" ng-if="jobOrderVm.jobOrderDetails.status == 'Production'">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">Select Printer</div>
+                                        <select class="form-control" ng-model="printerId" ng-options="item.id as item.name for item in jobOrderVm.printers">
+                                        </select>
+                                    </div>
+                                </div>
+                                <button ng-if="printerId" ng-click="jobOrderVm.startProcess('Printing', printerId)" type="button" class="btn btn-success">
+                                    <i class="fa fa-print"></i>Start Printing</button>
+                            </div>
+                            <button type="button" class="btn btn-success" ng-click="jobOrderVm.startProcess('Delivered')" ng-if="jobOrderVm.jobOrderDetails.status == 'Printing'">
+                                <i class="fa fa-truck fa-rotate-180 fa-flip-horizontal"></i>Delivered
+                            </button>
+                        </div>
+                    </div>
+                    <div class="panel panel-default top-default">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Qty Produced</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.quatityProduced}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Weight Produced</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.weightProduced}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Waste</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.waste}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Waste Weight</th>
+                                    <td>{{jobOrderVm.jobOrderDetails.wasteWeight}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-8 no-padding-left">
+                    <div class="row" ng-repeat="item in jobOrderVm.jobOrderDetails.items">
+                        <div class="panel panel-default top-default">
+                            <div class="panel-heading">
+                                <span style="font-weight: bold">{{item.product}}</span>
+                                <div class="status-header pull-right">
+                                    <div class="wizard">
+                                        <a ng-class="{ done: jobOrderVm.jobOrderDetails.stage >= 1  }">
+                                            <i class="fa fa-file-text-o"></i> ProForma</a>
+                                        <a ng-class="{ done: jobOrderVm.jobOrderDetails.stage >= 2  }">
+                                            <i class="fa fa-clone"></i> Job Order</a>
+                                        <a ng-class="{ done: jobOrderVm.jobOrderDetails.stage >= 3  }">
+                                            <i class="fa fa-crop"></i> Corrugation</a>
+                                        <a ng-class="{ done: jobOrderVm.jobOrderDetails.stage >= 4  }">
+                                            <i class="fa fa-print"></i> Printing</a>
+                                        <a ng-class="{ done: jobOrderVm.jobOrderDetails.stage >= 5  }">
+                                            <i class="fa fa-truck fa-rotate-180 fa-flip-horizontal"></i> Delivered</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="col-sm-6 no-padding">
+                                    <div class="panel panel-default glass">
+                                        <div class="panel-heading">Price Factors</div>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Quanity</th>
+                                                    <td>{{item.quantity}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Profit %</th>
+                                                    <td>{{item.profitMargin}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>NHIL %</th>
+                                                    <td>{{item.nhil}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>VAT %</th>
+                                                    <td>{{item.vat}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 no-padding-right">
+                                    <div class="panel panel-default glass">
+                                        <div class="panel-heading">Product Details</div>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Unit Cost</th>
+                                                    <td>{{item.unitPrice}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Dimensions</th>
+                                                    <td>{{item.length}} x {{item.width}} x {{item.height}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Total GSM</th>
+                                                    <td>{{item.gsm}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Board Weight</th>
+                                                    <td>{{item.totalBoardWeight | number: '2'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 no-padding">
+                                    <div class="panel panel-default glass">
+                                        <div class="panel-heading">Prices</div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Currency</th>
+                                                    <th class="amt">Cost Price</th>
+                                                    <th class="amt">Selling Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="currency in jobOrderVm.jobOrderDetails.exchangeRates">
+                                                    <td>{{currency.name}}</td>
+                                                    <td class="amt">{{currency.symbol}} {{(item.unitPrice * item.quantity) * currency.rate
+                                                        || 0 | number: '2'}}
+                                                    </td>
+                                                    <td class="amt">{{currency.symbol}} {{item.subTotal * currency.rate || 0 | number: '2'}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <button type="button" class="btn btn-danger pull-right" ng-click="jobOrderVm.cancelOrder()" ng-if="jobOrderVm.jobOrderDetails.stage < 4 && jobOrderVm.jobOrderDetails.stage > 0">
+                <i class="fa fa-trash"></i>Cancel
+            </button>
+            <button type="button" class="btn btn-default" ng-click="jobOrderVm.closeForm()">
+                <i class="fa fa-ban"></i>Close
+            </button>
+        </div>
+    </div>
+</page-content>

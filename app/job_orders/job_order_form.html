@@ -1,0 +1,180 @@
+<div class="pageheader_container">
+    <div class="pageheader">
+        <div class="btn-group btn-breadcrumb">
+            <a ui-sref="joborders" class="btn btn-default">
+                <i class="fa fa-tasks"></i> Job Orders
+            </a>
+            <a href="" class="btn">
+				{{jobOrderVm.title}}
+			</a>
+        </div>
+    </div>
+</div>
+
+<page-content>
+    <div class="card bg-white">
+        <div class="card-body no-padding-left">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="panel panel-default top-default">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Customer</label>
+                                <select ui-select2 class="form-control" ng-model="jobOrderVm.customerProduct" ng-options="item as item.name for item in jobOrderVm.customerProducts"
+                                    ng-change="jobOrderVm.setCustomerProducts()"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>LPO Number</label>
+                                <input type="text" class="form-control" ng-model="jobOrderVm.newJobOrder.referenceNumber">
+                            </div>
+                            <div class="form-group">
+                                <label>Order Date <i class="fa fa-asterisk color-maroon"></i></label>
+                                <input type="text" class="form-control" ng-model="jobOrderVm.newJobOrder.date" uib-datepicker-popup is-open="date.isOpen"
+                                    ng-click="date.isOpen=true" ng-required="true" style="line-height: initial;" placeholder="DD-MM-YYYY"
+                                    ng-change="jobOrderVm.setValidityDate()">
+                            </div>
+                            <div class="form-group">
+                                <label>Expiry Date</label>
+                                <input type="text" class="form-control" ng-model="jobOrderVm.newJobOrder.expiryDate" uib-datepicker-popup is-open="expiryDate.isOpen"
+                                    ng-click="expiryDate.isOpen=true" ng-required="true" style="line-height: initial;" placeholder="DD-MM-YYYY">
+                            </div>
+                            <div class="form-group">
+                                <label>Expected Delivery Date</label>
+                                <input type="text" class="form-control" ng-model="jobOrderVm.newJobOrder.expectedDelivery" uib-datepicker-popup is-open="expectedDelivery.isOpen"
+                                    ng-click="expectedDelivery.isOpen=true" style="line-height: initial;" placeholder="DD-MM-YYYY">
+                            </div>
+                            <div class="form-group">
+                                <label>Total</label>
+                                <span class="form-control amt">{{jobOrderVm.newJobOrder.total || 0 | number: '2'}}</span>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button type="button" class="btn btn-success" btn-loading="jobOrderVm.saving" data-loading-text="Saving..." ng-click="jobOrderVm.saveRecord()">
+                                <i class="fa fa-save"></i>Save
+                            </button>
+                            <button type="button" class="btn btn-default" ng-click="jobOrderVm.closeForm()">
+                                <i class="fa fa-ban"></i>Close
+                            </button>
+                            <button authorize="JobOrder.Delete" type="button" class="btn btn-danger pull-right" ng-if="jobOrderVm.newJobOrder.id" ng-click="jobOrderVm.deleteRecord()"
+                                btn-loading="jobOrderVm.deleting" data-loading-text="Deleting...">
+                                <i class="fa fa-trash"></i>Delete
+                                </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-8 no-padding">
+                    <div class="row" style="margin-bottom: 15px" ng-show="jobOrderVm.customerProduct">
+                        <label>Products (Select a product and click on the Add Product button)</label>
+                        <select ui-select2 class="col-sm-10 no-padding-left" ng-model="jobOrderVm.product" ng-options="item as item.name for item in jobOrderVm.products"></select>
+                        <button type="button" class="btn btn-primary col-sm-2" ng-click="jobOrderVm.addItem()"><i class="fa fa-plus"></i> Add Product</button>
+                    </div>
+
+                    <div class="row">
+                        <div class="panel panel-default" ng-repeat="jobOrder in jobOrderVm.newJobOrder.items">
+                            <div class="panel-heading" style="font-weight: bold">{{jobOrder.product.name}}</div>
+                            <div class="panel-body">
+                                <div class="col-sm-6 no-padding">
+                                    <div class="panel panel-default glass">
+                                        <div class="panel-heading">Price Factors</div>
+                                        <div class="panel-body" style="padding: 5px">
+                                            <div class="form-group" style="margin-bottom: 5px">
+                                                <div class="input-group equal-group">
+                                                    <div class="input-group-addon addon-text">Quantity</div>
+                                                    <input type="number" step="any" min="1" class="form-control amt" ng-model="jobOrder.quantity" ng-change="jobOrderVm.calculate()">
+                                                </div>
+                                            </div>
+                                            <div class="form-group" style="margin-bottom: 5px">
+                                                <div class="input-group equal-group">
+                                                    <span class="input-group-addon addon-text">Profit %</span>
+                                                    <input type="number" step="any" class="form-control amt" ng-model="jobOrder.profitMargin" ng-change="jobOrderVm.calculate()">
+                                                </div>
+                                            </div>
+                                            <div class="form-group" style="margin-bottom: 5px">
+                                                <div class="input-group equal-group">
+                                                    <span class="input-group-addon addon-text">NHIL %</span>
+                                                    <span class="form-control amt" style="padding-right: 27px">{{jobOrderVm.priceSetting.nhil}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" style="margin-bottom: 5px">
+                                                <div class="input-group equal-group">
+                                                    <div class="input-group-addon addon-text">VAT %</div>
+                                                    <span class="form-control amt" style="padding-right: 27px">{{jobOrderVm.priceSetting.vat}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 no-padding-right">
+                                    <div class="panel panel-default glass">
+                                        <div class="panel-heading">Product Details</div>
+                                        <div class="panel-body" style="padding: 5px">
+                                            <div class="form-group" style="margin-bottom: 5px">
+                                                <div class="input-group equal-group">
+                                                    <div class="input-group-addon addon-text">Unit Cost</div>
+                                                    <span class="form-control amt">{{jobOrder.product.price | number: '2'}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" style="margin-bottom: 5px">
+                                                <div class="input-group equal-group">
+                                                    <div class="input-group-addon addon-text">Dimensions</div>
+                                                    <span class="form-control amt">{{jobOrder.product.length}} x {{jobOrder.product.width}} x {{jobOrder.product.height}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" style="margin-bottom: 5px">
+                                                <div class="input-group equal-group">
+                                                    <div class="input-group-addon addon-text">Total GSM</div>
+                                                    <span class="form-control amt">{{jobOrder.product.gsm}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" style="margin-bottom: 5px">
+                                                <div class="input-group equal-group">
+                                                    <div class="input-group-addon addon-text">Board Weight</div>
+                                                    <span class="form-control amt">{{jobOrder.product.boardWeight | number: '2'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8 no-padding">
+                                    <div class="panel panel-default glass">
+                                        <div class="panel-heading">Prices</div>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Currency</th>
+                                                    <th>Cost Price</th>
+                                                    <th>Selling Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="currency in jobOrderVm.currencies">
+                                                    <th>{{currency.name}}</th>
+                                                    <td class="amt">{{currency.symbol}} {{(jobOrder.product.price * jobOrder.quantity) *
+                                                        currency.rate || 0 | number: '2'}}</td>
+                                                    <td class="amt">{{currency.symbol}} {{jobOrder.subTotal * currency.rate || 0 | number:
+                                                        '2'}}
+                                                    </td>
+
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 no-padding-right">
+                                    <div class="panel panel-default glass">
+                                        <div class="panel-heading">Artwork</div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <button type="button" class="btn btn-warning pull-right" ng-click="jobOrderVm.removeItem(jobOrder)"><i class="fa fa-remove"></i> Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="alert alert-info" role="alert" ng-hide="jobOrderVm.customerProduct">Please select a customer</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</page-content>

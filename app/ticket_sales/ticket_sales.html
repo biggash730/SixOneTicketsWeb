@@ -1,0 +1,241 @@
+<page-header title="Ticket Sales" icon="fa fa-check-square"></page-header>
+
+<page-content>
+
+    <div class="col-sm-8 no-padding-left">
+        <form>
+            <div class="card">
+                <div class="card-header header-line">
+                    New Ticket Sale
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Tickets</label>
+                        <select class="form-control" ui-select2 ng-model="ticketSaleVm.newRecord.ticket" ng-options="ticket as ticket.title for ticket in ticketSaleVm.tickets"
+                            ng-change="ticketSaleVm.calculate()"></select>
+                        <!--<div class="input-group">
+                        
+                        <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" style="margin-left: 10px;"><i class="fa fa-plus"></i> Add</button>
+                            </span>
+                    </div>-->
+                    </div>
+                    <!--<table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Ticket</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Amount</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="num_col_1"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>-->
+                    <div class="row" ng-if="ticketSaleVm.newRecord.ticket">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6 text-right">
+                                    <h4>Ticket:</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>
+                                        <b>{{ticketSaleVm.newRecord.ticket.title}}</b>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 text-right">
+                                    <h4>Type:</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>{{ticketSaleVm.newRecord.ticket.type}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 text-right">
+                                    <h4>Desc:</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>{{ticketSaleVm.newRecord.ticket.description}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 text-right">
+                                    <h4>Price:</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>{{ticketSaleVm.newRecord.ticket.price | currency: 'GH¢ '}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 text-right">
+                                    <h4>Admission:</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>{{ticketSaleVm.newRecord.admission}}</h4>
+                                </div>
+                            </div>
+                            <!--<div class="row" ng-if="ticketSaleVm.newRecord.ticket.type == 'Regular'">
+                            <div class="col-sm-6 text-right">
+                                <h4>Quantity</h4>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="number" class="form-control" min="1" ng-model="ticketSaleVm.newRecord.quantity" ng-change="ticketSaleVm.calculate()">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 text-right">
+                                <h4>Amount</h4>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4>{{ticketSaleVm.newRecord.price | currency: 'GH¢ '}}</h4>
+                            </div>
+                        </div>-->
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row" ng-if="ticketSaleVm.newRecord.ticket.type == 'Member'">
+                                <div class="col-sm-6 text-right">
+                                    <h4>Number of People</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="number" class="form-control" ng-model="ticketSaleVm.newRecord.admission" step="1" min="1" max="{{this.newRecord.ticket.admission}}">
+                                </div>
+                            </div>
+                            <div class="row" ng-if="ticketSaleVm.newRecord.ticket.type == 'Member' && ticketSaleVm.memberDetails.status != 'Active'">
+                                <div class="col-sm-6 text-right">
+                                    <h4>Member Number</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" ng-model="ticketSaleVm.newRecord.customerNumber">
+                                </div>
+                            </div>
+                            <div class="row" ng-if="ticketSaleVm.newRecord.ticket.type == 'Member' && ticketSaleVm.memberDetails.status != 'Active'">
+                                <div class="col-sm-12">
+                                    <button type="button" class="btn btn-primary pull-right" btn-loading="ticketSaleVm.verifying" data-loading-text="Verifying..."
+                                        ng-click="ticketSaleVm.verifyMember()">
+                                        <i class="fa fa-check-square"></i>Verify</button>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="ticketSaleVm.memberDetails.status == 'Active'">
+                                <div class="row">
+                                    <div class="col-sm-6 text-right">
+                                        <h4>Status</h4>
+                                    </div>
+                                    <div class="col-sm-6" style="margin-top: 5px; font-size: 18px;">
+                                        <span ng-class="{'label label-success': ticketSaleVm.memberDetails.status == 'Active', 'label label-danger': ticketSaleVm.memberDetails.status == 'Expired'}">{{ticketSaleVm.memberDetails.status}}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 text-right">
+                                        <h4>Name</h4>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>{{ticketSaleVm.memberDetails.name}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 text-right">
+                                        <h4>Package</h4>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>{{ticketSaleVm.memberDetails.packageName}}</h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 text-right">
+                                        <h4>Expiry Date</h4>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>{{ticketSaleVm.memberDetails.expiryDate | date: 'mediumDate'}}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="ticketSaleVm.newRecord.ticket">
+                        <hr>
+                        <div class="col-sm-6 text-right pull-right">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>Amount</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>{{ticketSaleVm.newRecord.price | currency: 'GH¢ '}}</h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>Discount</h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">GH¢</span>
+                                        <input type="number" class="form-control amt" min="0" max="{{ticketSaleVm.newRecord.totalPrice}}" ng-model="ticketSaleVm.newRecord.discount"
+                                            ng-change="ticketSaleVm.calculate()" ng-disabled="ticketSaleVm.newRecord.ticket.type == 'Member'">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>
+                                        <strong>Total Amount</strong>
+                                    </h4>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h4>
+                                        <strong>{{ticketSaleVm.newRecord.totalPrice | currency: 'GH¢ '}}</strong>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <button type="submit" class="btn btn-success btn-lg pull-right" btn-loading="ticketSaleVm.saving" data-loading-text="Saving..."
+                            ng-click="ticketSaleVm.save()" ng-disabled="ticketSaleVm.newRecord.ticket.type == 'Member' && ticketSaleVm.memberDetails.status != 'Active'"
+                            ng-if="ticketSaleVm.newRecord.ticket">
+                            <i class="fa fa-save"></i>Make Sale
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-4 no-padding-right">
+        <div class="panel panel-default">
+            <div class="panel-heading">Tickets Information</div>
+            <!--<div class="panel-body">-->
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Desc</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ticket in ticketSaleVm.tickets">
+                        <td>{{ticket.title}}</td>
+                        <td>{{ticket.type}}</td>
+                        <td>{{ticket.price | currency: 'GH¢ '}}</td>
+                        <td>{{ticket.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--</div>-->
+        </div>
+    </div>
+</page-content>

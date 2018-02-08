@@ -1,0 +1,44 @@
+<page-header title="Cancelled Ticket Sales" icon="fa fa-ban"></page-header>
+
+<page-content>
+    <div class="side_form col-sm-12 no-padding">
+        <button type="button" class="btn btn-primary" ng-click="ticketsVm.openForm()">
+			<i class="fa fa-close"></i>Cancel Ticket
+		</button>
+        <loading ng-if="ticketsVm.loading" class="pull-right"></loading>
+        <filter-box ng-hide="ticketsVm.loading" class="pull-right clear-padding-right" name="title" on-search="ticketsVm.fetch(filter)" placeholder="Search by title" advance="true">
+        </filter-box>
+    </div>
+
+
+    <div class="col-sm-12 no-padding">
+        <div class="panel panel-default top-default">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="num_col_1">#</th>
+                            <th>Date</th>
+                            <th>Ref Num</th>
+                            <th>Reasons</th>
+                            <th>Cancelled By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="ticket in ticketsVm.records" ng-click="ticketsVm.edit(ticket.id)">
+                            <td>{{((ticketsVm.pageNumber - 1) * 15) + $index + 1}}</td>
+                            <td>{{ticket.date | date: 'mediumDate'}}</td>
+                            <td>{{ticket.sale.refNumber}}</td>
+                            <td>{{ticket.sale.notes}}</td>
+                            <td>{{ticket.createdBy}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel-footer">
+                <span>Showing Page: {{ticketsVm.currentPage}} of {{ticketsVm.totalPages}}</span>
+                <uib-pager ng-change="ticketsVm.pageChanged(ticketsVm.currentPage)" total-items="ticketsVm.totalRecords" ng-model="ticketsVm.currentPage"></uib-pager>
+            </div>
+        </div>
+    </div>
+</page-content>
