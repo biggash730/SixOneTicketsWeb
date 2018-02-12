@@ -25,7 +25,7 @@
                 </div>
                 <div class="card-body align-right">
                     <p class="title">Cash Received</p>
-                    <h3 class="value">{{dashboardVm.stats.cashReceived | currency:'GHC '}}</h3>
+                    <h3 class="value">{{dashboardVm.stats.cashReceived || '0.00' | currency:'GHC '}}</h3>
                 </div>
                 <div class="card-footer">
                     <i class="fa fa-calendar"></i> Today
@@ -40,7 +40,7 @@
                 </div>
                 <div class="card-body align-right">
                     <p class="title">Total Tickets Sold</p>
-                    <h3 class="value">{{dashboardVm.stats.ticketsSold}}</h3>
+                    <h3 class="value">{{dashboardVm.stats.ticketsSold  || '0'}}</h3>
                 </div>
                 <div class="card-footer">
                     <i class="fa fa-calendar"></i> Today
@@ -55,7 +55,7 @@
                 </div>
                 <div class="card-body align-right">
                     <p class="title">Cancelled Ticket Sales</p>
-                    <h3 class="value">{{dashboardVm.stats.cancelledTicketSales}}</h3>
+                    <h3 class="value">{{dashboardVm.stats.cancelledTicketSales || '0'}}</h3>
                 </div>
                 <div class="card-footer">
                     <i class="fa fa-calendar"></i> Today
@@ -75,7 +75,7 @@
                 </div>
                 <div class="card-body align-right">
                     <p class="title">Regular Tickets Sold</p>
-                    <h3 class="value">{{dashboardVm.stats.regularTickets}}</h3>
+                    <h3 class="value">{{dashboardVm.stats.regularTickets || '0'}}</h3>
                 </div>
                 <div class="card-footer">
                     <i class="fa fa-calendar"></i> Today
@@ -90,7 +90,7 @@
                 </div>
                 <div class="card-body align-right">
                     <p class="title">Member Tickets Sold</p>
-                    <h3 class="value">{{dashboardVm.stats.memberTickets}}</h3>
+                    <h3 class="value">{{dashboardVm.stats.memberTickets || '0'}}</h3>
                 </div>
                 <div class="card-footer">
                     <i class="fa fa-calendar"></i> Today

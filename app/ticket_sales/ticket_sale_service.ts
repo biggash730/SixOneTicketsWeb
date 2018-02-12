@@ -34,7 +34,7 @@ class TicketSaleService implements IModelService<ITicketSale> {
         openModal(id: number) {
             var modalInstance = this.$uibModal.open({
                 animation: true,
-                template: require("../../reports/print.html"),
+                template: require("../reports/print.html"),
                 controller: 'PrintTicketCtrl',
                 controllerAs: 'printVm',
                 // size: 'lg',

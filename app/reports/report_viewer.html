@@ -12,21 +12,19 @@
 </div>
 
 <page-content>
-    <form ng-submit="rptViewerVm.run(rptViewerVm.filter)">
+    <form ng-submit="rptViewerVm.run()">
         <div class="panel panel-default glass report-filter pull-left">
             <div class="panel-heading">Filter Parameters</div>
             <div class="panel-body">
                 <div ng-if="rptViewerVm.report.lookUps" ng-include="rptViewerVm.report.name+'_report'"></div>
                 <div class="form-group" ng-hide="!rptViewerVm.report.dateFilter">
                     <label>Start Date</label>
-                    <input type="text" class="form-control" id="startDate" name="startDate" uib-datepicker-popup ng-model="rptViewerVm.filter.startDate"
-                    is-open="startDate.isOpen" ng-click="startDate.isOpen=true" />
+                    <input type="text" class="form-control" id="startDate" name="startDate" uib-datepicker-popup ng-model="rptViewerVm.filter.startDate" is-open="startDate.isOpen" ng-click="startDate.isOpen=true" />
                 </div>
 
                 <div class="form-group" ng-hide="!rptViewerVm.report.dateFilter">
                     <label>End Date</label>
-                    <input type="text" class="form-control" uib-datepicker-popup ng-model="rptViewerVm.filter.endDate" is-open="endDate.isOpen" ng-click="endDate.isOpen=true"
-                    id="endDate" name="endDate" />
+                    <input type="text" class="form-control" uib-datepicker-popup ng-model="rptViewerVm.filter.endDate" is-open="endDate.isOpen" ng-click="endDate.isOpen=true" id="endDate" name="endDate" />
                 </div>
             </div>
             <div class="panel-footer">
@@ -38,8 +36,11 @@
     </form>
 
     <div class="panel panel-default glass report-preview pull-left">
-        <div class="panel-heading">
-            Report Preview
+        <div class="panel-heading clearfix">
+            <span style="font-size: x-large;">Report Preview</span>
+            <!--<button btn-loading="rptViewerVm.downloading" data-loading-text="Downloading Report Data ...." class="btn btn-blockx btn-info pull-right" ng-click="rptViewerVm.download()" ng-if="rptViewerVm.loaded">
+                    <i class="fa fa-download"></i> Download Report
+                </button>-->
         </div>
         <div class="panel-body no-padding">
             <div id="report">

@@ -36,24 +36,8 @@ class LookUpModels {
 class LookUps {
     static get Models(): Array<ILookUpModel> {
         return [
-            { label: "Product Type", name: "productType", store: LookUpModels.ProductType, route: Routes.ProductTypeSettings, hidden: false },
-            { label: "Product Category", name: "productCategory", store: "productCategories", route: Routes.ProductCategorySettings, hidden: false },
-            { label: "Material Type", name: "materialType", store: "materialTypes", route: Routes.MaterialSettings, hidden: false },
-            { label: "Machine", name: "machine", store: "machines", route: Routes.MachineSetting, hidden: false },
-            { label: "Flute", name: "flute", store: "flutes", route: Routes.FluteSettings, hidden: false },
-            { label: "Currency", name: "currency", store: "currencies", route: Routes.CurrencySetting, hidden: false },
-            { label: "Supplier Category", name: "supplierCategory", store: "supplierCategories", route: Routes.GenericSettings, hidden: false },
-            { label: "Supplier", name: "supplier", store: "suppliers", route: Routes.GenericSettings, hidden: true },
-            { label: "Customer", name: "customer", store: "customers", route: Routes.GenericSettings, hidden: true },
-            { label: "Printers", name: "printer", store: "printers", route: Routes.GenericSettings, hidden: false },
-            { label: "Machines", name: "machine", store: "machines", route: Routes.GenericSettings, hidden: false },
-            { label: "StockItem", name: "stockItem", store: "stockItems", route: Routes.StockItem, hidden: true },
-            { label: "Users", name: "user", store: "users", route: Routes.GenericSettings, hidden: true },
-            { label: "Production", name: "production", store: "productions", route: Routes.GenericSettings, hidden: true },
-            { label: "Cost Settings", name: "costSetting", store: "costSetting", route: Routes.GenericSettings, hidden: true },
-            { label: "Price Setting", name: "priceSetting", store: "priceSetting", route: Routes.GenericSettings, hidden: true },
-            { label: "Customer Category", name: "customercategory", store: "customercategory", route: Routes.GenericSettings, hidden: false },
-            { label: "App Setting", name: "appsetting", store: "appSettings", route: Routes.GenericSettings, hidden: false }
+            { label: "Ticket", name: "tickets", store: "tickets", route: Routes.TicketSettings, hidden: false },
+            { label: "Royalty Packages", name: "royaltypackages", store: "royaltypackages", route: Routes.GenericSettings, hidden: false }
         ]
     };
 
@@ -63,6 +47,7 @@ class LookUps {
 
 interface ILookUpService {
     fetch(model: string): angular.IPromise<IRequestResult<Array<any>>>;
+    fetchCustom(route: string, filter: any): angular.IPromise<IRequestResult<Array<any>>>;
 }
 
 class LookUpService implements ILookUpService {
@@ -81,6 +66,14 @@ class LookUpService implements ILookUpService {
             defer.resolve(response)
         })
 
+        return defer.promise
+    }
+
+    fetchCustom(route: string, filter: any) {
+        let defer = this.$q.defer()
+        this.$http.post(`${this.baseUrl}/${route}`, filter).then((response: IRequestResult<Array<any>>) => {
+            defer.resolve(response)
+        })
         return defer.promise
     }
 

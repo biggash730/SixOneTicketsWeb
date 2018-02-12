@@ -1061,71 +1061,6 @@ a.mod-button label {
     background-color: white !important;
 }
 
-.order_card{
-    // text-align: center;
-}
-
-.order_card img{
-    width: 100px;
-}
-
-.order_card .info-pad{
-    border-top: 1px dashed #d4d4d4;
-    margin-top: 11px;
-}
-
-.order_card .name {
-        margin-bottom: 3px;
-        font-size: 15px;
-        margin-top: 10px;
-    }
-
-    .order_card .number {
-        color: #bec5c2;
-        font-size: 13px;
-        margin-bottom: 5px;
-    }
-
-.customer_card{
-    min-height: 125px;
-    img{
-        width: 100px;
-        margin-right: 10px;
-    }
-
-    .name {
-        margin-bottom: 3px;
-        font-size: 15px;
-    }
-
-    .number {
-        color: #bec5c2;
-        font-size: 13px;
-        margin-bottom: 5px;
-    }
-
-    .footer {
-        border-top: 1px solid #e4e5e7;
-        background-color: #f7f9fa;
-        padding: 7px;
-
-        .border-right {
-            border-right: 1px solid #e4e5e7;
-        }
-
-        .stat {
-            text-align: center;
-
-            span {
-                text-transform: uppercase;
-                font-size: 11px;
-                color: #a5a5a5;
-                display: block;
-            }
-        }
-    }
-}
-
 .status-header {
   font-size: 12px;
   margin-top: -6px;
@@ -1226,9 +1161,41 @@ a.mod-button label {
         height: 1136px;
     }
 
-.artwork {
-    text-align: center;
-    padding: 10px;
-    font-size: 17px;
-    font-weight: bold;
-}
+    .dashboard {
+        .card {
+            border-radius: 3px;
+        }
+    
+        .dashboard-card-header {
+            float: left;
+            text-align: center;
+            padding: 15px;
+            margin: -15px 15px 0;
+            box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            border-radius: 3px;
+        }
+    
+        .title {
+            margin: 0px;
+            color: #999;
+        }
+    
+        .value {
+            margin: 5px 0 0;
+            color: #3c4858;
+            font-weight: 300;
+        }
+    
+        .card-body {
+            padding: 15px 20px;
+        }
+    
+        .card-footer {
+            margin: 0 20px 10px;
+            border-top: 1px solid #eee;
+            padding: 10px 0;
+            color: #999;
+            text-align: left;
+        }
+    }
