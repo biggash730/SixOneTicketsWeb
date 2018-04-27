@@ -45,7 +45,7 @@ let AppRoutes = ($stateProvider: any,
             controllerAs: 'reportsVm',
             menu:'reports',
             authorize: true,
-            permission: 'Reports'
+            permission: 'CanViewReport'
         })
         .state(Routes.TicketSales, {
             url: '/ticket_sales',
@@ -90,7 +90,7 @@ let AppRoutes = ($stateProvider: any,
             controllerAs: 'rptViewerVm',
             menu: 'reports',
             authorize: true,
-            permission: 'Reports'
+            permission: 'CanViewReport'
         })
         .state(Routes.Settings, {
             url: '/settings',
@@ -99,7 +99,7 @@ let AppRoutes = ($stateProvider: any,
             controllerAs: 'settingsVm',
             menu:'settings',
             authorize: true,
-            permission: 'Settings'
+            permission: 'CanViewSetting'
         })
         .state(Routes.GenericSettings, {
             url: '/:setting',
@@ -108,7 +108,7 @@ let AppRoutes = ($stateProvider: any,
             controllerAs: 'settingVm',
             menu:'settings',
             authorize: true,
-            permission: 'Settings'
+            permission: 'CanViewSetting'
         })
         .state(Routes.TicketSettings, {
             url: '/:setting/ticket',
@@ -126,7 +126,7 @@ let AppRoutes = ($stateProvider: any,
             controllerAs: 'usersVm',
             menu:'admin.users',
             authorize: true,
-            permission: 'Administration'
+            permission: 'CanViewAdministration'
         })
         .state(Routes.Users, {
             url: '/users',
@@ -135,7 +135,7 @@ let AppRoutes = ($stateProvider: any,
             controllerAs: 'usersVm',
             menu:'admin.users',
             authorize: true,
-            permission: 'User.Read'
+            permission: 'CanViewUser'
         })
         .state(Routes.Roles, {
             url: '/roles',
@@ -144,7 +144,7 @@ let AppRoutes = ($stateProvider: any,
             controllerAs: 'rolesVm',
             menu:'admin.users',
             authorize: true,
-            permission: 'Role.Read'
+            permission: 'CanViewRole'
         })
 
     $urlRouterProvider.otherwise(Routes.Dashboard);
