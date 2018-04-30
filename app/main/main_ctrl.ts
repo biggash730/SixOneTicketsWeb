@@ -58,9 +58,9 @@ class MainCtrl {
     setUserMenus() {
         let menus: Array<IMenuItem> = [
             { label: "Dashboard", route: Routes.Dashboard, icon: "fa fa-dashboard color-aqua",privilege: "CanViewDashboard", header: false },
-            { label: "Ticket Sale", route: Routes.TicketSales, icon: "fa fa-check-square color-orange", privilege: "CanViewDashboard", header: false },
-            { label: "Ticket Sale List", route: Routes.TicketSaleList, icon: "fa fa-list-alt color-blue", privilege: "CanViewDashboard", header: false },            
-            { label: "Cancelled Sales", route: Routes.CancelledTicketSales, icon: "fa fa-ban color-purple", privilege: "CanViewDashboard", header: false },
+            { label: "Sell Ticket", route: Routes.TicketSales, icon: "fa fa-check-square color-orange", privilege: "CanSellTickets", header: false },
+            { label: "Sold Tickets List", route: Routes.TicketSaleList, icon: "fa fa-list-alt color-blue", privilege: "CanViewSoldTickets", header: false },            
+            { label: "Cancelled Ticket Sales", route: Routes.CancelledTicketSales, icon: "fa fa-ban color-purple", privilege: "CanViewCancelledTickets", header: false },
             { label: "Reports", route: Routes.Reports, icon: "fa fa-bar-chart-o color-teal", privilege: "CanViewReport", header: false },
             { label: "Settings", route: Routes.Settings, icon: "fa fa-cogs color-maroon", privilege: "CanViewSetting", header: false },
             { label: "Manage Users", route: Routes.Users, icon: "fa fa-users color-yellow", privilege: "CanViewAdministration", header: false }

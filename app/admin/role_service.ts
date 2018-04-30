@@ -50,7 +50,7 @@ class RoleService implements IRoleService {
 		theProfile.privileges = profile.privileges.toString()
 
 		if (profile.id) {
-			this.$http.put(`${this.baseUrl}/account/updateprofile`, theProfile).then((response: IRequestResult<IRole>) => {
+			this.$http.put(`${this.baseUrl}/profile`, theProfile).then((response: IRequestResult<IRole>) => {
 				if (response.data.privileges) {
 					response.data.privileges = response.data.privileges.toString().split(',')
 				}

@@ -19,6 +19,7 @@ interface IAuthService {
 	isLogin(): boolean
 	login(params: ILoginParams): angular.IPromise<IRequestResult<IUser>>
 	changePassword(params: IChangePasswordParams): angular.IPromise<IRequestResult<any>>
+	resetPassword(params: any): angular.IPromise<IRequestResult<any>>
 	checkLogin(): void
 	logOut(): angular.IPromise<IRequestResult<any>>
 	setUser(user: IUser): void
@@ -53,6 +54,15 @@ class AuthService implements IAuthService {
 	changePassword(passwordDetails: IChangePasswordParams) {
 		let defer = this.$q.defer()
 		this.$http.post(`${this.baseUrl}/account/changepassword`,
+			passwordDetails).then((response) => {
+				defer.resolve(response)
+			})
+		return defer.promise
+	}
+
+	resetPassword(passwordDetails: any) {
+		let defer = this.$q.defer()
+		this.$http.post(`${this.baseUrl}/account/resetpassword`,
 			passwordDetails).then((response) => {
 				defer.resolve(response)
 			})

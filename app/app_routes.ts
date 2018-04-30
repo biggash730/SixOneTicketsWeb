@@ -29,6 +29,15 @@ let AppRoutes = ($stateProvider: any,
             authorize: true,
             permission: ''
         })
+        .state(Routes.ResetPassword, {
+            url: '/resetpassword',
+            template: require('./user_profile/reset_password.html'),
+            controller: 'UserProfileCtrl',
+            controllerAs: 'profileVm',
+            menu:'',
+            authorize: true,
+            permission: ''
+        })
         .state(Routes.Dashboard, {
             url: '/dashboard',
             template: require('./main/dashboard.html'),

@@ -11,6 +11,8 @@
                         <ul class="dropdown-menu">
                             <li><a ui-sref="changePassword"><i class="fa fa-lock"></i> Change Password</a></li>
                             <li class="divider"></li>
+                            <li authorize="CanViewAdministration"><a ui-sref="resetpassword"><i class="fa fa-refresh"></i> Reset Passwords</a></li>
+                            <li class="divider" authorize="CanViewAdministration"></li>
                             <li><a href="" ng-click="mainVm.signOut()"><i class="fa fa-sign-out"></i> Logout</a></li>
                         </ul>
                     </li>

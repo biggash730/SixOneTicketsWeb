@@ -2,7 +2,7 @@
 
 <page-content>
     <div class="side_form col-sm-12 no-padding">
-        <button type="button" class="btn btn-primary" ng-click="ticketsVm.openForm()">
+        <button type="button" class="btn btn-primary" ng-click="ticketsVm.openForm()" privilege: "CanCancelTickets">
 			<i class="fa fa-close"></i>Cancel Ticket
 		</button>
         <loading ng-if="ticketsVm.loading" class="pull-right"></loading>

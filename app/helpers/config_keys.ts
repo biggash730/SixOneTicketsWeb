@@ -25,6 +25,7 @@ class Routes {
 	static get Admin() { return "admin" }
 	static get Users() { return "admin.users" }
 	static get Roles() { return "admin.roles" }
+	static get ResetPassword() { return "resetpassword" }
 	static get ChangePassword() { return "changePassword" }
 	static get TicketSettings() { return "settings.ticket" }
 	static get TicketSales() { return "ticket_sales" }
